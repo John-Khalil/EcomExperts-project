@@ -113,6 +113,7 @@
       "image": "/images/cameras/duo-doorbell.png",
       "learnMore": "#",
       "price": 69.98,
+      "compareAtPrice": null,
       "variants": []
     },
     {
@@ -123,6 +124,7 @@
       "image": "/images/cameras/battery-cam-pro.png",
       "learnMore": "#",
       "price": 89.98,
+      "compareAtPrice": null,
       "variants": [
         {
           "id": "white",
@@ -144,30 +146,55 @@
       "image": "/images/plans/cam-unlimited.png",
       "price": 9.99,
       "compareAtPrice": 12.99,
-      "billing": "month"
+      "billing": "month",
+      "includedBenefits": [
+        {
+          "id": "fast-shipping",
+          "title": "Fast Shipping",
+          "icon": "truck",
+          "price": 0,
+          "compareAtPrice": 5.99
+        },
+        {
+          "id": "satisfaction-guarantee",
+          "title": "100% Satisfaction Guarantee",
+          "icon": "badge"
+        }
+      ]
     },
     {
       "id": "motion-sensor",
       "category": "sensors",
       "name": "Wyze Sense Motion Sensor",
       "image": "/images/sensors/motion.png",
-      "price": 29.99
+      "price": 29.99,
+      "compareAtPrice": null,
+      "variants": []
     },
     {
       "id": "sense-hub",
       "category": "sensors",
       "name": "Wyze Sense Hub",
       "image": "/images/sensors/hub.png",
-      "price": 29.92,
-      "salePrice": 0,
-      "required": true
+      "price": 0,
+      "compareAtPrice": 29.92,
+      "required": true,
+      "variants": []
     },
     {
       "id": "microsd-256",
       "category": "accessories",
       "name": "Wyze MicroSD Card (256GB)",
       "image": "/images/accessories/microsd.png",
-      "price": 20.98
+      "price": 20.98,
+      "compareAtPrice": null,
+      "variants": []
     }
-  ]
+  ],
+  "review": {
+    "financingText": "as low as $19.19/mo",
+    "checkoutButton": "Checkout",
+    "saveForLaterText": "Save my system for later",
+    "savingsMessage": "Congrats! You're saving $50.92 on your security bundle!"
+  }
 }
