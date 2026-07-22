@@ -3,22 +3,22 @@
     {
       "id": "cameras",
       "title": "Choose your cameras",
-      "icon": "camera"
+      "icon": "src/assets/StepperCamera.svg"
     },
     {
       "id": "plan",
       "title": "Choose your plan",
-      "icon": "shield"
+      "icon": "src/assets/StepperPlan.svg"
     },
     {
       "id": "sensors",
       "title": "Choose your sensors",
-      "icon": "sensor"
+      "icon": "src/assets/StepperSensor.svg"
     },
     {
       "id": "accessories",
       "title": "Add extra protection",
-      "icon": "grid"
+      "icon": "src/assets/StepperAccessories.svg"
     }
   ],
   "products": [

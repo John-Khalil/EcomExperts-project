@@ -1,7 +1,8 @@
 // types.ts
-type Variant = "white" | "grey" | "black";
 
-type ProductId =
+export type Variant = "white" | "grey" | "black";
+
+export type ProductId =
   | "wyze-cam-v4"
   | "wyze-cam-pan-v3"
   | "wyze-cam-floodlight-v2"
@@ -20,31 +21,34 @@ export type BundleState = {
   quantities: Record<string, number>;
 };
 
-type StepId = "cameras" | "plan" | "sensors" | "accessories";
 
-type StepIcon = "camera" | "shield" | "sensor" | "grid";
+export type StepId = "cameras" | "plan" | "sensors" | "accessories";
 
-type BundleStep = {
+export type StepIcon = "camera" | "shield" | "sensor" | "grid";
+
+export type BundleStep = {
   id: StepId;
   title: string;
-  icon: StepIcon;
+  icon: string;
 };
 
 
-type ProductCategory = StepId;
+export type ProductCategory = StepId;
 
-type Badge = {
+export type Badge = {
   text: string;
   color: string;
 };
 
-type ProductVariant = {
+
+export type ProductVariant = {
   id: string;
   label: string;
   thumbnail: string;
 };
 
-type IncludedBenefit = {
+
+export type IncludedBenefit = {
   id: string;
   title: string;
   icon: string;
@@ -53,7 +57,7 @@ type IncludedBenefit = {
 };
 
 
-type BaseProduct = {
+export type BaseProduct = {
   id: string;
   category: ProductCategory;
   name: string;
@@ -67,37 +71,37 @@ type BaseProduct = {
 };
 
 
-type CameraProduct = BaseProduct & {
+export type CameraProduct = BaseProduct & {
   category: "cameras";
 };
 
 
-type PlanProduct = BaseProduct & {
+export type PlanProduct = BaseProduct & {
   category: "plan";
   billing: "month" | "year";
   includedBenefits: IncludedBenefit[];
 };
 
 
-type SensorProduct = BaseProduct & {
+export type SensorProduct = BaseProduct & {
   category: "sensors";
   required?: boolean;
 };
 
 
-type AccessoryProduct = BaseProduct & {
+export type AccessoryProduct = BaseProduct & {
   category: "accessories";
 };
 
 
-type Product =
+export type Product =
   | CameraProduct
   | PlanProduct
   | SensorProduct
   | AccessoryProduct;
 
 
-type ReviewConfig = {
+export type ReviewConfig = {
   financingText: string;
   checkoutButton: string;
   saveForLaterText: string;
@@ -105,7 +109,7 @@ type ReviewConfig = {
 };
 
 
-type BundleConfig = {
+export type BundleConfig = {
   steps: BundleStep[];
   products: Product[];
   review: ReviewConfig;

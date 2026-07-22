@@ -1,4 +1,4 @@
-import { BundleState } from "../types/types";
+import type { BundleState } from "../types/types";
 
 export const bundleState: BundleState = {
   activeStep: "cameras",
