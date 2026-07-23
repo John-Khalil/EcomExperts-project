@@ -12,27 +12,30 @@ type StepperProps = {
   onStepChange: (step: StepId) => void;
 };
 
-function ProductSection (stepId: StepId){
-  // const {data,loading,error} = useProducts();
-  const {data} = useProducts();
-  const { state, setVariant, updateQuantity } = useBundle();
-  return(
+type ProductSectionProps = {
+  stepId: StepId;
+};
 
+function ProductSection({ stepId }: ProductSectionProps) {
+  const { data } = useProducts();
+  const { state, setVariant, updateQuantity } = useBundle();
+
+  return (
     <ProductGrid>
       {data?.products
-        .filter((product:BaseProduct) => product.category === stepId)
-        .map((p:BaseProduct) => (
+        .filter(product => product.category === stepId)
+        .map(product => (
           <ProductCard
-            key={p.id}
-            product={p}
-            variant={state.activeVariants[p.id]}
-            quantity={state.quantities[p.id] ?? 0}
+            key={product.id}
+            product={product}
+            variant={state.activeVariants[product.id]}
+            quantity={state.quantities[product.id] ?? 0}
             onVariantChange={setVariant}
             onQuantityChange={updateQuantity}
           />
         ))}
     </ProductGrid>
-  )
+  );
 }
 
 export default function Stepper({
@@ -117,10 +120,10 @@ export default function Stepper({
             {/* Step Content */}
            {isActive ? (
             <div className="bg-[#edf3ff] p-6">
-              {step.id === "cameras" && ProductSection(step.id)}
-              {step.id === "plan" && ProductSection(step.id)}
-              {step.id === "sensors" && ProductSection(step.id)}
-              {step.id === "accessories" && ProductSection(step.id)}
+              {step.id === "cameras" && < ProductSection stepId={step.id} />}
+              {step.id === "plan" && < ProductSection stepId={step.id} />}
+              {step.id === "sensors" && < ProductSection stepId={step.id} />}
+              {step.id === "accessories" && < ProductSection stepId={step.id} />}
 
               {nextStep && (
                 <div className="inline-flex items-center justify-center w-full">
