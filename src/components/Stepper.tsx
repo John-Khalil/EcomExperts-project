@@ -1,4 +1,4 @@
-import { useState, type JSX } from "react";
+import { useState, type JSX,useEffect } from "react";
 import type { BaseProduct, BundleStep, StepId } from "../types/types";
 import ProductGrid from "./ProductGrid";
 import useProducts from "../hooks/LoadProducts";
@@ -8,7 +8,6 @@ import { useBundle } from "../context/BundleContext";
 type StepperProps = {
   steps: BundleStep[];
   activeStep: StepId|string;
-  canContinue: boolean;
   onStepChange: (step: StepId) => void;
 };
 
@@ -41,7 +40,6 @@ function ProductSection({ stepId }: ProductSectionProps) {
 export default function Stepper({
   steps,
   activeStep,
-  canContinue,
   onStepChange,
 }: StepperProps) {
   return (
@@ -50,6 +48,23 @@ export default function Stepper({
         const isActive = activeStep === step.id;
         const nextStep =index < steps.length - 1 ? steps[index + 1] : null;
         const [selectedCount, setSelectedCount] = useState(0);
+        const [canContinue,setCanContinue] = useState(false);
+        const { state } = useBundle();
+        const { data } = useProducts();
+        useEffect(() => {
+          if (!data?.products) return;
+
+          const selected = data.products
+            .filter(product => product.category === step.id)
+            .filter(product => {
+              return (state.quantities[product.id] ?? 0) > 0;
+            })
+            .length;
+
+          setSelectedCount(selected);
+          setCanContinue(selected > 0);
+
+        }, [state.quantities, data?.products, step.id]);
         return (
           <div key={step.id}  className={`
             transition
@@ -104,7 +119,7 @@ export default function Stepper({
 
               {/* Chevron */}
               <span className="text-purple-600 inline-flex ">
-                <span className="text-base font-medium pb-2 mx-1">{`${selectedCount} `}selected</span>
+                {isActive&&<span className="text-base font-medium pb-2 mx-1">{`${selectedCount} selected`}</span>}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

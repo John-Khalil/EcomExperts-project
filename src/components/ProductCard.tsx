@@ -97,7 +97,7 @@ export default function ProductCard({
             </p>
           )}
 
-          {variants.length > 0 && (
+          {(variants??[]).length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
               {variants.map((v) => {
                 const isActive = variant === v.id;
