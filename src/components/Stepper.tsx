@@ -1,12 +1,39 @@
-import { useState } from "react";
-import type { BundleStep, StepId } from "../types/types";
+import { useState, type JSX } from "react";
+import type { BaseProduct, BundleStep, StepId } from "../types/types";
+import ProductGrid from "./ProductGrid";
+import useProducts from "../hooks/LoadProducts";
+import ProductCard from "./ProductCard";
+import { useBundle } from "../context/BundleContext";
 
 type StepperProps = {
   steps: BundleStep[];
-  activeStep: StepId;
+  activeStep: StepId|string;
   canContinue: boolean;
   onStepChange: (step: StepId) => void;
 };
+
+function ProductSection (stepId: StepId){
+  // const {data,loading,error} = useProducts();
+  const {data} = useProducts();
+  const { state, setVariant, updateQuantity } = useBundle();
+  return(
+
+    <ProductGrid>
+      {data?.products
+        .filter((product:BaseProduct) => product.category === stepId)
+        .map((p:BaseProduct) => (
+          <ProductCard
+            key={p.id}
+            product={p}
+            variant={state.activeVariants[p.id]}
+            quantity={state.quantities[p.id] ?? 0}
+            onVariantChange={setVariant}
+            onQuantityChange={updateQuantity}
+          />
+        ))}
+    </ProductGrid>
+  )
+}
 
 export default function Stepper({
   steps,
@@ -90,10 +117,10 @@ export default function Stepper({
             {/* Step Content */}
            {isActive ? (
             <div className="bg-[#edf3ff] p-6">
-              {step.id === "cameras" && <div>Camera products here</div>}
-              {step.id === "plan" && <div>Plan products here</div>}
-              {step.id === "sensors" && <div>Sensors here</div>}
-              {step.id === "accessories" && <div>Accessories here</div>}
+              {step.id === "cameras" && ProductSection(step.id)}
+              {step.id === "plan" && ProductSection(step.id)}
+              {step.id === "sensors" && ProductSection(step.id)}
+              {step.id === "accessories" && ProductSection(step.id)}
 
               {nextStep && (
                 <div className="inline-flex items-center justify-center w-full">
@@ -115,7 +142,7 @@ export default function Stepper({
                       font-semibold
                       transition
                       ${
-                        (canContinue || true)
+                        canContinue
                           ? "text-[#5145E5] hover:bg-[#5145E5] hover:text-white"
                           : "cursor-not-allowed border-gray-300 text-gray-300"
                       }
