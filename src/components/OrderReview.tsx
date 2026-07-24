@@ -134,7 +134,7 @@ export default function OrderReview() {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="h-20 w-20 rounded-lg border object-contain"
+                  className="h-20 w-20 rounded-lg  object-contain"
                 />
 
                 <div className="flex-1">
@@ -147,47 +147,51 @@ export default function OrderReview() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => decrease(product)}
-                    className="rounded border p-2"
-                  >
-                    <Minus size={16} />
-                  </button>
 
-                  <span className="w-6 text-center">
-                    {quantity}
-                  </span>
+                <div className="flex text-right items-center gap-1">
+                  
+                  <div className="flex  items-end justify-end gap-2 p-1">
+                    <button
+                      onClick={() => decrease(product)}
+                      className="flex h-7 w-7 items-center justify-center rounded  p-1 bg-white"
+                    >
+                      <Minus size={16} />
+                    </button>
 
-                  <button
-                    onClick={() => increase(product)}
-                    className="rounded border p-2"
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
+                    <span className="w-6 text-center">
+                      {quantity}
+                    </span>
 
-                <div className="w-24 text-right">
-                  {product.compareAtPrice && (
-                    <div className="text-gray-400 line-through">
-                      $
-                      {(
-                        product.compareAtPrice *
-                        quantity
-                      ).toFixed(2)}
-                    </div>
-                  )}
+                    <button
+                      onClick={() => increase(product)}
+                      className="flex h-7 w-7 items-center justify-center rounded  p-1 bg-white"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                  <div className="flex flex-col items-end justify-end ">
 
-                  <div className="font-semibold text-purple-700">
-                    {product.price === 0
-                      ? "FREE"
-                      : `$${(
-                          (product.price ?? 0) *
+                    {product.compareAtPrice && (
+                      <div className="font-semibold text-gray-400 line-through">
+                        $
+                        {(
+                          product.compareAtPrice *
                           quantity
-                        ).toFixed(2)}`}
+                        ).toFixed(2)}
+                      </div>
+                    )}
 
-                    {product.category === "plan" &&
-                      " /mo"}
+                    <div className="font-semibold text-purple-700">
+                      {product.price === 0
+                        ? "FREE"
+                        : `$${(
+                          (product.price ?? 0) *
+                            quantity
+                          ).toFixed(2)}`}
+
+                      {product.category === "plan" &&
+                        " /mo"}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -226,29 +230,32 @@ export default function OrderReview() {
     compareSubtotal - subtotal;
 
   return (
-    <div className="rounded-xl bg-white p-6 shadow">
+    <div className="rounded-xl bg-[#edf4ff] p-6 shadow">
       <h2 className="mb-2 text-4xl font-bold">
         Your security system
       </h2>
 
       <p className="mb-8 text-gray-500">
-        Review your personalized protection system.
+        Review your personalized protection system designed to keep what matters most safe.
       </p>
 
       {renderSection(
         "CAMERAS",
         cameras
       )}
+      <div className="my-2 h-px w-full bg-gray-300" />
 
       {renderSection(
         "SENSORS",
         sensors
       )}
+      <div className="my-2 h-px w-full bg-gray-300" />
 
       {renderSection(
         "ACCESSORIES",
         accessories
       )}
+      <div className="my-2 h-px w-full bg-gray-300" />
 
       {renderSection(
         "PLAN",
@@ -256,12 +263,17 @@ export default function OrderReview() {
       )}
 
       {benefits.length > 0 && (
-        <div className="mb-8 border-t pt-6">
+        <div className="mb-8  pt-6">
           {benefits.map((benefit) => (
             <div
               key={benefit.id}
               className="mb-4 flex items-center justify-between"
             >
+              <img
+                src={benefit.icon}
+                alt={benefit.title}
+                className="mr-4 h-16 w-16 object-cover"
+              />
               <span>
                 {benefit.title}
               </span>
@@ -285,7 +297,7 @@ export default function OrderReview() {
         </div>
       )}
 
-      <div className="border-t pt-6">
+      <div className="pt-6">
         {compareSubtotal > 0 && (
           <div className="flex justify-between text-gray-500 line-through">
             <span>
