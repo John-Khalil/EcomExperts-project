@@ -1,3 +1,5 @@
+import OrderReview from "./components/OrderReview";
+
 export default function BundleLayout({
   children,
 }: {
@@ -36,7 +38,7 @@ export default function BundleLayout({
             "
           >
             {/* Review Panel */}
-            <section>Review Panel</section>
+            <section><OrderReview /></section>
 
             {/* Checkout Panel */}
             <section>Checkout Panel</section>
