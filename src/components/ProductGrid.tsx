@@ -1,6 +1,10 @@
 import { Children, type ReactNode } from "react";
 
-export default function ProductGrid({ children }: {children: ReactNode}) {
+export default function ProductGrid({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <div
       className="
@@ -9,14 +13,14 @@ export default function ProductGrid({ children }: {children: ReactNode}) {
         md:flex md:flex-nowrap md:gap-4 md:overflow-x-auto md:pb-2
         md:[scrollbar-width:thin] md:snap-x md:snap-mandatory
 
-        lg:grid lg:grid-cols-2 lg:overflow-visible lg:pb-0 lg:snap-none
+        xl:grid xl:grid-cols-2 xl:overflow-visible xl:pb-0 xl:snap-none
       "
     >
       {Children.map(children, (child) => (
         <div
           className="
             md:w-[320px] md:flex-none md:snap-start
-            lg:w-auto
+            xl:w-auto
           "
         >
           {child}

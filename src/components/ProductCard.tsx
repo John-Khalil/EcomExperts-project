@@ -71,7 +71,7 @@ export default function ProductCard({
 
       <div className="flex max-xl:flex-col gap-4">
         
-        <div className="flex h-48 w-48 mx-auto flex-none items-center justify-center overflow-hidden rounded-xl bg-white">
+        <div className="flex h-40 w-40 mx-auto flex-none items-center justify-center overflow-hidden rounded-xl bg-white">
           <img
             src={image}
             alt={name}
@@ -111,7 +111,7 @@ export default function ProductCard({
                       onVariantChange?.(id as ProductId, v.id)
                     }
                     aria-pressed={isActive}
-                    className={`flex items-center gap-1 rounded-md border-2 px-2.5 py-1.5 text-lg font-normal transition-colors
+                    className={`flex items-center gap-1 rounded-md border-2 px-2.5 py-1.5 text-sm font-normal transition-colors
                     ${
                       isActive
                         ? "border-[#0aa288] bg-[#f6fefc]/5 text-[#1f1f1f]"
