@@ -25,7 +25,9 @@ export default function OrderReview() {
   }
 
   function getQuantity(product: Product) {
-    if (product.variants.length === 0) {
+    const variants = product.variants ?? [];
+
+    if (variants.length === 0) {
       return state.quantities[product.id] ?? 0;
     }
 
@@ -42,7 +44,9 @@ export default function OrderReview() {
   }
 
   function getQuantityKey(product: Product) {
-    if (product.variants.length === 0) {
+    const variants = product.variants ?? [];
+
+    if (variants.length === 0) {
       return product.id;
     }
 
@@ -103,7 +107,7 @@ export default function OrderReview() {
   const benefits: IncludedBenefit[] =
     selectedPlan &&
     "includedBenefits" in selectedPlan
-      ? selectedPlan.includedBenefits
+      ? selectedPlan.includedBenefits ?? []
       : [];
 
   function renderSection(
@@ -178,7 +182,7 @@ export default function OrderReview() {
                     {product.price === 0
                       ? "FREE"
                       : `$${(
-                          product.price *
+                          (product.price ?? 0) *
                           quantity
                         ).toFixed(2)}`}
 
@@ -197,7 +201,7 @@ export default function OrderReview() {
   const subtotal = selectedProducts.reduce(
     (sum, product) =>
       sum +
-      product.price *
+      (product.price ?? 0) *
         getQuantity(product),
     0
   );

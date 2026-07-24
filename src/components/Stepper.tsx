@@ -15,24 +15,60 @@ type ProductSectionProps = {
   stepId: StepId;
 };
 
+// function ProductSection({ stepId }: ProductSectionProps) {
+//   const { data } = useProducts();
+//   const { state, setVariant, updateQuantity } = useBundle();
+
+//   return (
+//     <ProductGrid>
+//       {data?.products
+//         .filter(product => product.category === stepId)
+//         .map(product => (
+//           <ProductCard
+//             key={product.id}
+//             product={product}
+//             variant={state.activeVariants[product.id]}
+//             quantity={state.quantities[product.id] ?? 0}
+//             onVariantChange={setVariant}
+//             onQuantityChange={updateQuantity}
+//           />
+//         ))}
+//     </ProductGrid>
+//   );
+// }
+
+
 function ProductSection({ stepId }: ProductSectionProps) {
   const { data } = useProducts();
   const { state, setVariant, updateQuantity } = useBundle();
+
+  function getQuantityKey(product: BaseProduct) {
+    const variants = product.variants ?? [];
+    if (variants.length === 0) return product.id;
+    const variant = state.activeVariants[product.id as ProductId];
+    return variant ? `${product.id}:${variant}` : product.id;
+  }
 
   return (
     <ProductGrid>
       {data?.products
         .filter(product => product.category === stepId)
-        .map(product => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            variant={state.activeVariants[product.id]}
-            quantity={state.quantities[product.id] ?? 0}
-            onVariantChange={setVariant}
-            onQuantityChange={updateQuantity}
-          />
-        ))}
+        .map(product => {
+          const key = getQuantityKey(product);
+
+          return (
+            <ProductCard
+              key={product.id}
+              product={product}
+              variant={state.activeVariants[product.id]}
+              quantity={state.quantities[key] ?? 0}
+              onVariantChange={setVariant}
+              onQuantityChange={(_productId, qty) =>
+                updateQuantity(key, qty)
+              }
+            />
+          );
+        })}
     </ProductGrid>
   );
 }
