@@ -1,5 +1,5 @@
 import { useState, type JSX,useEffect } from "react";
-import type { BaseProduct, BundleStep, StepId } from "../types/types";
+import type { BaseProduct, BundleStep, StepId, ProductId, BundleState } from "../types/types";
 import ProductGrid from "./ProductGrid";
 import useProducts from "../hooks/LoadProducts";
 import ProductCard from "./ProductCard";
@@ -15,46 +15,37 @@ type ProductSectionProps = {
   stepId: StepId;
 };
 
-// function ProductSection({ stepId }: ProductSectionProps) {
-//   const { data } = useProducts();
-//   const { state, setVariant, updateQuantity } = useBundle();
+/**
+ * Derives the key used to store/read a product's quantity in
+ * BundleState.quantities. Products without variants are keyed by
+ * their plain id; products with variants are keyed as `${id}:${variant}`
+ * based on the currently active variant selection.
+ *
+ * Used by both ProductSection and the selected-count effect below —
+ * keep these in sync, since a mismatch here is what causes quantities
+ * to silently disagree between the two.
+ */
+function getQuantityKey(
+  product: BaseProduct,
+  activeVariants: BundleState["activeVariants"]
+) {
+  const variants = product.variants ?? [];
+  if (variants.length === 0) return product.id;
 
-//   return (
-//     <ProductGrid>
-//       {data?.products
-//         .filter(product => product.category === stepId)
-//         .map(product => (
-//           <ProductCard
-//             key={product.id}
-//             product={product}
-//             variant={state.activeVariants[product.id]}
-//             quantity={state.quantities[product.id] ?? 0}
-//             onVariantChange={setVariant}
-//             onQuantityChange={updateQuantity}
-//           />
-//         ))}
-//     </ProductGrid>
-//   );
-// }
-
+  const variant = activeVariants[product.id as ProductId];
+  return variant ? `${product.id}:${variant}` : product.id;
+}
 
 function ProductSection({ stepId }: ProductSectionProps) {
   const { data } = useProducts();
   const { state, setVariant, updateQuantity } = useBundle();
-
-  function getQuantityKey(product: BaseProduct) {
-    const variants = product.variants ?? [];
-    if (variants.length === 0) return product.id;
-    const variant = state.activeVariants[product.id as ProductId];
-    return variant ? `${product.id}:${variant}` : product.id;
-  }
 
   return (
     <ProductGrid>
       {data?.products
         .filter(product => product.category === stepId)
         .map(product => {
-          const key = getQuantityKey(product);
+          const key = getQuantityKey(product, state.activeVariants);
 
           return (
             <ProductCard
@@ -93,14 +84,15 @@ export default function Stepper({
           const selected = data.products
             .filter(product => product.category === step.id)
             .filter(product => {
-              return (state.quantities[product.id] ?? 0) > 0;
+              const key = getQuantityKey(product, state.activeVariants);
+              return (state.quantities[key] ?? 0) > 0;
             })
             .length;
 
           setSelectedCount(selected);
           setCanContinue(selected > 0);
 
-        }, [state.quantities, data?.products, step.id]);
+        }, [state.quantities, state.activeVariants, data?.products, step.id]);
         return (
           <div key={step.id}  className={`
             transition
