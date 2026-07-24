@@ -64,13 +64,14 @@ export default function ProductCard({
       }`}
     >
       {badge && (
-        <span className="absolute -top-3 left-4 rounded-full bg-[#5B4FE5] px-3 py-1 text-xs font-semibold text-white shadow-sm">
+        <span className="absolute top-3 left-4 rounded-full bg-[#5B4FE5] px-3 py-1 text-xs font-semibold text-white shadow-sm">
           {badge.text}
         </span>
       )}
 
-      <div className="flex gap-4">
-        <div className="flex h-24 w-24 flex-none items-center justify-center overflow-hidden rounded-xl bg-slate-50">
+      <div className="flex max-xl:flex-col gap-4">
+        
+        <div className="flex h-48 w-48 mx-auto flex-none items-center justify-center overflow-hidden rounded-xl bg-white">
           <img
             src={image}
             alt={name}
@@ -79,12 +80,12 @@ export default function ProductCard({
         </div>
 
         <div className="flex min-w-0 flex-col">
-          <h3 className="text-[15px] font-semibold text-slate-900">
+          <h3 className="text-2xl font-semibold text-slate-900">
             {name}
           </h3>
 
           {description && (
-            <p className="mt-1 text-sm leading-snug text-slate-500">
+            <p className="mt-1 text-lg leading-snug text-slate-500">
               {description}{" "}
               {learnMore && (
                 <a
@@ -110,69 +111,73 @@ export default function ProductCard({
                       onVariantChange?.(id as ProductId, v.id)
                     }
                     aria-pressed={isActive}
-                    className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors
+                    className={`flex items-center gap-1 rounded-md border-2 px-2.5 py-1.5 text-lg font-normal transition-colors
                     ${
                       isActive
-                        ? "border-[#5B4FE5] bg-[#5B4FE5]/5 text-slate-900"
-                        : "border-slate-200 text-slate-600 hover:border-slate-300"
+                        ? "border-[#0aa288] bg-[#f6fefc]/5 text-[#1f1f1f]"
+                        : "border-[#cccccc] text-[#1f1f1f] hover:border-slate-300"
                     }`}
                   >
                     <img
                       src={v.thumbnail}
                       alt={v.label}
-                      className="h-3.5 w-3.5 rounded-full object-cover"
+                      className="h-7 w-7 rounded-full object-cover"
                     />
 
                     {v.label}
 
-                    {isActive && (
+                    {/* {isActive && (
                       <Check
                         size={12}
                         className="text-[#5B4FE5]"
                       />
-                    )}
+                    )} */}
                   </button>
                 );
               })}
             </div>
           )}
-        </div>
-      </div>
 
-      <div className="mt-4 flex items-end justify-between">
-        <div className="flex items-center gap-2 rounded-lg border border-slate-200 p-1">
-          <button
-            type="button"
-            onClick={decrease}
-            disabled={quantity === 0}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent"
-          >
-            <Minus size={14} />
-          </button>
 
-          <span className="w-5 text-center text-sm font-semibold tabular-nums">
-            {quantity}
-          </span>
 
-          <button
-            type="button"
-            onClick={increase}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"
-          >
-            <Plus size={14} />
-          </button>
-        </div>
 
-        <div className="text-right leading-tight">
-          {compareAtPrice != null && (
-            <div className="text-sm text-red-500 line-through">
-              ${compareAtPrice.toFixed(2)}
+          <div className="mt-4 flex items-end justify-between">
+            <div className="flex items-center gap-2 rounded-lg p-1">
+              <button
+                type="button"
+                onClick={decrease}
+                disabled={quantity === 0}
+                className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent border-2"
+              >
+                <Minus size={14} />
+              </button>
+
+              <span className="w-5 text-center text-xl font-semibold tabular-nums">
+                {quantity}
+              </span>
+
+              <button
+                type="button"
+                onClick={increase}
+                className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 bg-[#f0f4f7]"
+              >
+                <Plus size={14} />
+              </button>
             </div>
-          )}
 
-          <div className="text-base font-bold text-slate-900">
-            ${price.toFixed(2)}
+            <div className="text-right leading-tight max-xl:flex max-xl:items-end max-xl:gap-2">
+              {compareAtPrice != null && (
+                <div className="text-lg font-normal text-red-500 line-through">
+                  ${compareAtPrice.toFixed(2)}
+                </div>
+              )}
+
+              <div className="text-lg font-normal text-slate-900">
+                ${price.toFixed(2)}
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
