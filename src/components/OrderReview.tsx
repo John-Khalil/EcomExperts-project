@@ -11,10 +11,17 @@ import type {
 
 export default function OrderReview() {
   const { state, updateQuantity } = useBundle();
-  const { products, loading } = useProducts();
+
+  const { data, loading, error } = useProducts();
+
+  const products = data?.products ?? [];
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
   function getQuantity(product: Product) {
@@ -42,13 +49,20 @@ export default function OrderReview() {
     const variant =
       state.activeVariants[product.id as ProductId];
 
+    if (!variant) {
+      return product.id;
+    }
+
     return `${product.id}:${variant}`;
   }
 
   function increase(product: Product) {
     const key = getQuantityKey(product);
 
-    updateQuantity(key, getQuantity(product) + 1);
+    updateQuantity(
+      key,
+      getQuantity(product) + 1
+    );
   }
 
   function decrease(product: Product) {
@@ -58,7 +72,10 @@ export default function OrderReview() {
 
     const key = getQuantityKey(product);
 
-    updateQuantity(key, quantity - 1);
+    updateQuantity(
+      key,
+      quantity - 1
+    );
   }
 
   const selectedProducts = products.filter(
@@ -119,6 +136,7 @@ export default function OrderReview() {
                 <div className="flex-1">
                   <p className="font-medium">
                     {product.name}
+
                     {"required" in product &&
                       product.required &&
                       " (Required)"}
@@ -160,8 +178,10 @@ export default function OrderReview() {
                     {product.price === 0
                       ? "FREE"
                       : `$${(
-                          product.price * quantity
+                          product.price *
+                          quantity
                         ).toFixed(2)}`}
+
                     {product.category === "plan" &&
                       " /mo"}
                   </div>
@@ -177,21 +197,26 @@ export default function OrderReview() {
   const subtotal = selectedProducts.reduce(
     (sum, product) =>
       sum +
-      product.price * getQuantity(product),
+      product.price *
+        getQuantity(product),
     0
   );
 
   const compareSubtotal =
-    selectedProducts.reduce((sum, product) => {
-      if (!product.compareAtPrice)
-        return sum;
+    selectedProducts.reduce(
+      (sum, product) => {
+        if (!product.compareAtPrice) {
+          return sum;
+        }
 
-      return (
-        sum +
-        product.compareAtPrice *
-          getQuantity(product)
-      );
-    }, 0);
+        return (
+          sum +
+          product.compareAtPrice *
+            getQuantity(product)
+        );
+      },
+      0
+    );
 
   const savings =
     compareSubtotal - subtotal;
@@ -203,20 +228,28 @@ export default function OrderReview() {
       </h2>
 
       <p className="mb-8 text-gray-500">
-        Review your personalized
-        protection system.
+        Review your personalized protection system.
       </p>
 
-      {renderSection("CAMERAS", cameras)}
+      {renderSection(
+        "CAMERAS",
+        cameras
+      )}
 
-      {renderSection("SENSORS", sensors)}
+      {renderSection(
+        "SENSORS",
+        sensors
+      )}
 
       {renderSection(
         "ACCESSORIES",
         accessories
       )}
 
-      {renderSection("PLAN", plans)}
+      {renderSection(
+        "PLAN",
+        plans
+      )}
 
       {benefits.length > 0 && (
         <div className="mb-8 border-t pt-6">
@@ -225,24 +258,22 @@ export default function OrderReview() {
               key={benefit.id}
               className="mb-4 flex items-center justify-between"
             >
-              <span>{benefit.title}</span>
+              <span>
+                {benefit.title}
+              </span>
 
               <div className="text-right">
                 {benefit.compareAtPrice && (
                   <div className="text-gray-400 line-through">
                     $
-                    {benefit.compareAtPrice.toFixed(
-                      2
-                    )}
+                    {benefit.compareAtPrice.toFixed(2)}
                   </div>
                 )}
 
                 <div className="font-semibold text-purple-700">
                   {benefit.price === 0
                     ? "FREE"
-                    : `$${benefit.price?.toFixed(
-                        2
-                      )}`}
+                    : `$${benefit.price?.toFixed(2)}`}
                 </div>
               </div>
             </div>
@@ -253,7 +284,10 @@ export default function OrderReview() {
       <div className="border-t pt-6">
         {compareSubtotal > 0 && (
           <div className="flex justify-between text-gray-500 line-through">
-            <span>Regular Price</span>
+            <span>
+              Regular Price
+            </span>
+
             <span>
               ${compareSubtotal.toFixed(2)}
             </span>
@@ -261,8 +295,13 @@ export default function OrderReview() {
         )}
 
         <div className="mt-2 flex justify-between text-xl font-bold">
-          <span>Total</span>
-          <span>${subtotal.toFixed(2)}</span>
+          <span>
+            Total
+          </span>
+
+          <span>
+            ${subtotal.toFixed(2)}
+          </span>
         </div>
 
         {savings > 0 && (
