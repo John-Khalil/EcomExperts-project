@@ -112,7 +112,8 @@ export default function OrderReview() {
 
   function renderSection(
     title: string,
-    items: Product[]
+    items: Product[],
+    imageBackground?: string,
   ) {
     if (items.length === 0) return null;
 
@@ -134,11 +135,11 @@ export default function OrderReview() {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="h-20 w-20 rounded-lg  object-contain"
+                  className={`h-20 max-w-60 rounded-lg  object-contain ${imageBackground??"bg-white"}`}
                 />
 
                 <div className="flex-1">
-                  <p className="font-medium">
+                  <p className="text-xl font-medium">
                     {product.name}
 
                     {"required" in product &&
@@ -150,7 +151,7 @@ export default function OrderReview() {
 
                 <div className="flex text-right items-center gap-1">
                   
-                  <div className="flex  items-end justify-end gap-2 p-1">
+                  {!(product.category==="plan")&&<div className="flex  items-end justify-end gap-2 p-1">
                     <button
                       onClick={() => decrease(product)}
                       className="flex h-7 w-7 items-center justify-center rounded  p-1 bg-white"
@@ -168,7 +169,7 @@ export default function OrderReview() {
                     >
                       <Plus size={16} />
                     </button>
-                  </div>
+                  </div>}
                   <div className="flex flex-col items-end justify-end ">
 
                     {product.compareAtPrice && (
@@ -178,6 +179,8 @@ export default function OrderReview() {
                           product.compareAtPrice *
                           quantity
                         ).toFixed(2)}
+                        {product.category === "plan" &&
+                        " /mo"}
                       </div>
                     )}
 
@@ -230,14 +233,15 @@ export default function OrderReview() {
     compareSubtotal - subtotal;
 
   return (
-    <div className="rounded-xl bg-[#edf4ff] p-6 shadow">
-      <h2 className="mb-2 text-4xl font-bold">
+    <div className="rounded-xl bg-[#edf4ff] p-6">
+      <h2 className="mb-2 text-4xl font-semibold">
         Your security system
       </h2>
 
-      <p className="mb-8 text-gray-500">
+      <p className="text-xl mb-4 text-gray-500">
         Review your personalized protection system designed to keep what matters most safe.
       </p>
+      <div className="my-2 h-px w-full bg-gray-300" />
 
       {renderSection(
         "CAMERAS",
@@ -259,8 +263,10 @@ export default function OrderReview() {
 
       {renderSection(
         "PLAN",
-        plans
+        plans,
+        "bg-[#edf4ff]"
       )}
+      <div className="my-2 h-px w-full bg-gray-300" />
 
       {benefits.length > 0 && (
         <div className="mb-8  pt-6">
@@ -269,15 +275,18 @@ export default function OrderReview() {
               key={benefit.id}
               className="mb-4 flex items-center justify-between"
             >
-              <img
-                src={benefit.icon}
-                alt={benefit.title}
-                className="mr-4 h-16 w-16 object-cover"
-              />
-              <span>
-                {benefit.title}
-              </span>
+              <div className="flex items-center gap-4">
+                <img
+                  src={benefit.icon}
+                  alt={benefit.title}
+                  className="mr-4 h-16 w-16 object-cover"
+                  />
+                <span>
+                  {benefit.title}
+                </span>
+              </div>
 
+                
               <div className="text-right">
                 {benefit.compareAtPrice && (
                   <div className="text-gray-400 line-through">
@@ -286,11 +295,11 @@ export default function OrderReview() {
                   </div>
                 )}
 
-                <div className="font-semibold text-purple-700">
+                {(benefit.price!==undefined) &&<div className="font-semibold text-purple-700">
                   {benefit.price === 0
                     ? "FREE"
                     : `$${benefit.price?.toFixed(2)}`}
-                </div>
+                </div>}
               </div>
             </div>
           ))}

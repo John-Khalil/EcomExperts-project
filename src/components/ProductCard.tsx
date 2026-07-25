@@ -56,7 +56,7 @@ export default function ProductCard({
 
   return (
     <div
-      className={`relative flex flex-col rounded-2xl bg-white p-5 transition-shadow
+      className={`relative flex flex-col rounded-2xl bg-white py-2 px-3 transition-shadow
       ${
         selected
           ? "ring-2 ring-[#5B4FE5] shadow-[0_2px_16px_rgba(91,79,229,0.12)]"
@@ -69,13 +69,13 @@ export default function ProductCard({
         </span>
       )}
 
-      <div className="flex max-xl:flex-col gap-4">
+      <div className="flex items-center justify-center max-xl:flex-col gap-0">
         
-        <div className="flex h-40 w-40 mx-auto flex-none items-center justify-center overflow-hidden rounded-xl bg-white">
+        <div className="flex h-38 w-38 mx-auto flex-none items-center justify-center overflow-hidden rounded-xl bg-white">
           <img
             src={image}
             alt={name}
-            className="h-full w-full object-contain p-2"
+            className="h-full w-full object-contain p-0"
           />
         </div>
 
@@ -141,7 +141,7 @@ export default function ProductCard({
 
 
 
-          <div className="mt-4 flex items-end justify-between">
+          <div className="mt-1 flex items-end justify-between">
             <div className="flex items-center gap-2 rounded-lg p-1">
               <button
                 type="button"

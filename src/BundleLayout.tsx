@@ -14,9 +14,7 @@ export default function BundleLayout({
             grid-cols-1
             gap-6
 
-            lg:grid-cols-[minmax(0,1fr)_380px]
-
-            xl:grid-cols-[minmax(0,1fr)_420px]
+    xl:grid-cols-[minmax(0,1fr)_520px]
             xl:gap-8
           "
         >
@@ -35,6 +33,7 @@ export default function BundleLayout({
               md:grid-cols-2
 
               lg:grid-cols-1
+              bg-[#edf4ff]
             "
           >
             {/* Review Panel */}

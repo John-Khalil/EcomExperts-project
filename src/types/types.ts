@@ -106,6 +106,9 @@ export type ReviewConfig = {
   checkoutButton: string;
   saveForLaterText: string;
   savingsMessage: string;
+  sticker:string;
+  title:string;
+  description:string;
 };
 
 
