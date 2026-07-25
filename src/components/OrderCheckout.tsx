@@ -6,7 +6,7 @@ import useProducts from "../hooks/LoadProducts";
 import type { Product, ProductId } from "../types/types";
 
 export default function OrderCheckout() {
-  const { state } = useBundle();
+  const { state ,save} = useBundle();
   const { data, loading, error } = useProducts();
 
   const getQuantityForProduct = (product: Product) => {
@@ -139,7 +139,7 @@ export default function OrderCheckout() {
       </button>
 
       {/* Save Later */}
-      <button className="mt-2 block w-full text-center text-lg  text-zinc-600 underline">
+      <button className="mt-2 block w-full text-center text-lg  text-zinc-600 underline" onClick={save}>
         {review.saveForLaterText}
       </button>
     </aside>
