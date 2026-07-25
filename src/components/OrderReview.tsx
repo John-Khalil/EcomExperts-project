@@ -65,7 +65,7 @@ export default function OrderReview() {
 
     updateQuantity(
       key,
-      getQuantity(product) + 1
+      (product.category==="plan"||(product.price===0))? 1 :(getQuantity(product) + 1) + 1
     );
   }
 
@@ -78,7 +78,7 @@ export default function OrderReview() {
 
     updateQuantity(
       key,
-      quantity - 1
+       Math.max(product.required ? 1 : 0, quantity - 1)
     );
   }
 
@@ -133,7 +133,7 @@ export default function OrderReview() {
                 className="flex items-center gap-4"
               >
                 <img
-                  src={product.image}
+                  src={product?.icon??product.image}
                   alt={product.name}
                   className={`h-20 max-w-60 rounded-lg  object-contain ${imageBackground??"bg-white"}`}
                 />
@@ -201,6 +201,7 @@ export default function OrderReview() {
             );
           })}
         </div>
+        <div className="my-2 h-px w-full bg-gray-300" />
       </div>
     );
   }
@@ -247,26 +248,26 @@ export default function OrderReview() {
         "CAMERAS",
         cameras
       )}
-      <div className="my-2 h-px w-full bg-gray-300" />
+      {/* {cameras?.length&&<div className="my-2 h-px w-full bg-gray-300" />} */}
 
       {renderSection(
         "SENSORS",
         sensors
       )}
-      <div className="my-2 h-px w-full bg-gray-300" />
+      {/* {sensors?.length&&<div className="my-2 h-px w-full bg-gray-300" />} */}
 
       {renderSection(
         "ACCESSORIES",
         accessories
       )}
-      <div className="my-2 h-px w-full bg-gray-300" />
+      {/* {(accessories?.length)&&<div className="my-2 h-px w-full bg-gray-300" />} */}
 
       {renderSection(
         "PLAN",
         plans,
         "bg-[#edf4ff]"
       )}
-      <div className="my-2 h-px w-full bg-gray-300" />
+      {/* {(plans?.length!==0)&&<div className="my-2 h-px w-full bg-gray-300" />} */}
 
       {benefits.length > 0 && (
         <div className="mb-8  pt-6">

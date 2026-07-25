@@ -63,10 +63,12 @@ export type BaseProduct = {
   name: string;
   description?: string;
   image: string;
+  icon?: string;
   learnMore?: string;
   price: number;
   compareAtPrice: number | null;
   badge?: Badge;
+  required?: boolean;
   variants: ProductVariant[];
 };
 
@@ -85,7 +87,7 @@ export type PlanProduct = BaseProduct & {
 
 export type SensorProduct = BaseProduct & {
   category: "sensors";
-  required?: boolean;
+  
 };
 
 

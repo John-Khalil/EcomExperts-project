@@ -39,9 +39,11 @@ export default function ProductCard({
     name,
     description,
     image,
+    icon,
     learnMore,
     price,
     compareAtPrice,
+    required,
     badge,
     variants,
   } = product;
@@ -49,14 +51,14 @@ export default function ProductCard({
   const selected = quantity > 0;
 
   const decrease = () =>
-    onQuantityChange(id as ProductId, Math.max(0, quantity - 1));
+    onQuantityChange(id as ProductId, Math.max(required ? 1 : 0, quantity - 1));
 
   const increase = () =>
-    onQuantityChange(id as ProductId, quantity + 1);
+    onQuantityChange(id as ProductId, (product.category==="plan"||(price===0))? 1 :quantity + 1);
 
   return (
     <div
-      className={`relative flex flex-col rounded-2xl bg-white py-2 px-3 transition-shadow
+      className={`relative flex flex-col rounded-2xl bg-white py-2 px-3 transition-shadow max-xl:max-w-[320px] max-xl:mx-auto
       ${
         selected
           ? "ring-2 ring-[#5B4FE5] shadow-[0_2px_16px_rgba(91,79,229,0.12)]"
@@ -79,8 +81,11 @@ export default function ProductCard({
           />
         </div>
 
-        <div className="flex min-w-0 flex-col">
+        <div className="flex min-w-[240px] flex-col">
           <h3 className="text-2xl font-semibold text-slate-900">
+            {icon ? (
+              <img src={icon} alt={name} className="h-10  inline-block mr-2" />
+            ) : null}
             {name}
           </h3>
 
@@ -168,12 +173,12 @@ export default function ProductCard({
             <div className="text-right leading-tight max-xl:flex max-xl:items-end max-xl:gap-2">
               {compareAtPrice != null && (
                 <div className="text-lg font-normal text-red-500 line-through">
-                  ${compareAtPrice.toFixed(2)}
+                  ${compareAtPrice.toFixed(2)}{product.category === "plan" && " /mo"}
                 </div>
               )}
 
               <div className="text-lg font-normal text-slate-900">
-                ${price.toFixed(2)}
+                ${price.toFixed(2)}{product.category === "plan" && " /mo"}
               </div>
             </div>
           </div>
