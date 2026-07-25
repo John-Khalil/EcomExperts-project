@@ -1,4 +1,5 @@
 import OrderReview from "./components/OrderReview";
+import OrderCheckout from "./components/OrderCheckout";
 
 export default function BundleLayout({
   children,
@@ -30,9 +31,9 @@ export default function BundleLayout({
               grid-cols-1
               gap-6
 
-              md:grid-cols-2
+              lg:grid-cols-2
 
-              lg:grid-cols-1
+              xl:grid-cols-1
               bg-[#edf4ff]
             "
           >
@@ -40,7 +41,7 @@ export default function BundleLayout({
             <section><OrderReview /></section>
 
             {/* Checkout Panel */}
-            <section>Checkout Panel</section>
+            <section><OrderCheckout /></section>
           </aside>
         </div>
       </div>

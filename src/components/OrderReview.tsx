@@ -233,7 +233,7 @@ export default function OrderReview() {
     compareSubtotal - subtotal;
 
   return (
-    <div className="rounded-xl bg-[#edf4ff] p-6">
+    <div className="rounded-xl bg-[#edf4ff] p-6 pb-0">
       <h2 className="mb-2 text-4xl font-semibold">
         Your security system
       </h2>
@@ -275,13 +275,13 @@ export default function OrderReview() {
               key={benefit.id}
               className="mb-4 flex items-center justify-between"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-0">
                 <img
                   src={benefit.icon}
                   alt={benefit.title}
-                  className="mr-4 h-16 w-16 object-cover"
+                  className="mr-3 h-16 w-16 object-cover"
                   />
-                <span>
+                <span className="text-xl font-medium">
                   {benefit.title}
                 </span>
               </div>
@@ -289,7 +289,7 @@ export default function OrderReview() {
                 
               <div className="text-right">
                 {benefit.compareAtPrice && (
-                  <div className="text-gray-400 line-through">
+                  <div className="text-gray-400 line-through font-semibold">
                     $
                     {benefit.compareAtPrice.toFixed(2)}
                   </div>
@@ -306,7 +306,7 @@ export default function OrderReview() {
         </div>
       )}
 
-      <div className="pt-6">
+      {/* <div className="pt-6">
         {compareSubtotal > 0 && (
           <div className="flex justify-between text-gray-500 line-through">
             <span>
@@ -335,7 +335,7 @@ export default function OrderReview() {
             {savings.toFixed(2)}
           </p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
