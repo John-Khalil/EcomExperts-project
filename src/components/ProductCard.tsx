@@ -1,4 +1,4 @@
-import { Minus, Plus, Check } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 
 import type {
   Product,
@@ -18,7 +18,7 @@ type ProductCardProps = {
 
   onVariantChange?: (
     productId: ProductId,
-    variantId: ProductVariant["id"] | Variant
+    variant: Variant
   ) => void;
 
   onQuantityChange: (
@@ -113,7 +113,7 @@ export default function ProductCard({
                     key={v.id}
                     type="button"
                     onClick={() =>
-                      onVariantChange?.(id as ProductId, v.id)
+                      onVariantChange?.(id as ProductId, v.id as Variant)
                     }
                     aria-pressed={isActive}
                     className={`flex items-center gap-1 rounded-md border-2 px-2.5 py-1.5 text-sm font-normal transition-colors

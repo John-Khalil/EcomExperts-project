@@ -11,7 +11,8 @@ export type ProductId =
   | "motion-sensor"
   | "sense-hub"
   | "microsd-256"
-  | "cam-unlimited";
+  | "cam-unlimited"
+  | "wyze-30-days-refund-protection";
 
 export type BundleState = {
   activeStep: string;
@@ -22,7 +23,7 @@ export type BundleState = {
 };
 
 
-export type StepId = "cameras" | "plan" | "sensors" | "accessories";
+export type StepId = "cameras" | "plan" | "sensors" | "accessories" | "protection";
 
 export type StepIcon = "camera" | "shield" | "sensor" | "grid";
 
@@ -95,12 +96,16 @@ export type AccessoryProduct = BaseProduct & {
   category: "accessories";
 };
 
+export type ProtectionProduct = BaseProduct & {
+  category: "protection";
+};
 
 export type Product =
   | CameraProduct
   | PlanProduct
   | SensorProduct
-  | AccessoryProduct;
+  | AccessoryProduct
+  | ProtectionProduct;
 
 
 export type ReviewConfig = {

@@ -206,33 +206,6 @@ export default function OrderReview() {
     );
   }
 
-  const subtotal = selectedProducts.reduce(
-    (sum, product) =>
-      sum +
-      (product.price ?? 0) *
-        getQuantity(product),
-    0
-  );
-
-  const compareSubtotal =
-    selectedProducts.reduce(
-      (sum, product) => {
-        if (!product.compareAtPrice) {
-          return sum;
-        }
-
-        return (
-          sum +
-          product.compareAtPrice *
-            getQuantity(product)
-        );
-      },
-      0
-    );
-
-  const savings =
-    compareSubtotal - subtotal;
-
   return (
     <div className="rounded-xl bg-[#edf4ff] p-6 pb-0">
       <h2 className="mb-2 text-4xl font-semibold">

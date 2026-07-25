@@ -30,6 +30,7 @@ export const bundleState: BundleState = {
     "sense-hub": 1,
     "microsd-256": 2,
 
-    "cam-unlimited": 1
+    "cam-unlimited": 1,
+    "wyze-30-days-refund-protection": 1
   }
 };

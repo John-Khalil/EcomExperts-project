@@ -1,4 +1,4 @@
-import { useState, type JSX,useEffect } from "react";
+import { useState, useEffect } from "react";
 import type { BaseProduct, BundleStep, StepId, ProductId, BundleState } from "../types/types";
 import ProductGrid from "./ProductGrid";
 import useProducts from "../hooks/LoadProducts";
@@ -51,7 +51,7 @@ function ProductSection({ stepId }: ProductSectionProps) {
             <ProductCard
               key={product.id}
               product={product}
-              variant={state.activeVariants[product.id]}
+              variant={state.activeVariants[product.id as ProductId]}
               quantity={state.quantities[key] ?? 0}
               onVariantChange={setVariant}
               onQuantityChange={(_productId, qty) =>
@@ -163,10 +163,7 @@ export default function Stepper({
             {/* Step Content */}
            {isActive ? (
             <div className="bg-[#edf3ff] p-6">
-              {step.id === "cameras" && < ProductSection stepId={step.id} />}
-              {step.id === "plan" && < ProductSection stepId={step.id} />}
-              {step.id === "sensors" && < ProductSection stepId={step.id} />}
-              {step.id === "accessories" && < ProductSection stepId={step.id} />}
+              <ProductSection stepId={step.id} />
 
               {nextStep && (
                 <div className="inline-flex items-center justify-center w-full">

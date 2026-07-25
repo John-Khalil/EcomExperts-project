@@ -3,10 +3,22 @@
 import { useMemo } from "react";
 import { useBundle } from "../context/BundleContext";
 import useProducts from "../hooks/LoadProducts";
+import type { Product, ProductId } from "../types/types";
 
 export default function OrderCheckout() {
   const { state } = useBundle();
   const { data, loading, error } = useProducts();
+
+  const getQuantityForProduct = (product: Product) => {
+    const variants = product.variants ?? [];
+    const activeVariant = state.activeVariants[product.id as ProductId];
+    const key =
+      variants.length > 0 && activeVariant
+        ? `${product.id}:${activeVariant}`
+        : product.id;
+
+    return state.quantities[key] ?? 0;
+  };
 
   const totals = useMemo(() => {
     if (!data) {
@@ -21,17 +33,10 @@ export default function OrderCheckout() {
     let total = 0;
 
     for (const product of data.products) {
-      const activeVariant = state.activeVariants[product.id as any];
-
-      const quantity =
-        (product?.variants??[]).length > 0 && activeVariant
-          ? state.quantities[`${product.id}:${activeVariant}`] ?? 0
-          : state.quantities[product.id] ?? 0;
+      const quantity = getQuantityForProduct(product);
 
       total += product.price * quantity;
-
-      subtotal +=
-        (product.compareAtPrice ?? product.price) * quantity;
+      subtotal += (product.compareAtPrice ?? product.price) * quantity;
     }
 
     return {
@@ -39,7 +44,7 @@ export default function OrderCheckout() {
       total,
       savings: subtotal - total,
     };
-  }, [data, state]);
+  }, [data, getQuantityForProduct]);
 
   if (loading) {
     return (
@@ -58,32 +63,37 @@ export default function OrderCheckout() {
   }
 
   const { review } = data;
+  const selectedProtection = data.products.filter(
+    (product) => product.category === "protection" && getQuantityForProduct(product) > 0
+  );
 
   return (
     <aside className="rounded-2xl bg-[#edf4ff] p-6 pt-0 lg:pt-6 xl:pt-0">
       {/* Header */}
       <div className="flex justify-between items-center gap-5">
-        <img
-          src={review.sticker}
-          alt=""
-          className="h-32 w-32 lg:h-38 w-38 xl:h-32 w-32 shrink-0 object-contain"
-        />
+        {(selectedProtection?.length!==0)&&<>
+          <img
+            src={review.sticker}
+            alt=""
+            className="h-32 w-32 lg:h-38 w-38 xl:h-32 w-32 shrink-0 object-contain"
+            />
 
-        <div className="hidden lg:block xl:hidden">
-          <h3 className="text-2xl font-semibold text-zinc-900">
-            {review.title}
-          </h3>
+          <div className="hidden lg:block xl:hidden">
+            <h3 className="text-2xl font-semibold text-zinc-900">
+              {review.title}
+            </h3>
 
-          <p className="mt-4 text-xl leading-relaxed text-zinc-700">
-            {review.description}
-          </p>
-        </div>
+            <p className="mt-4 text-xl leading-relaxed text-zinc-700">
+              {review.description}
+            </p>
+          </div>
+        </>}
 
         {/* Financing + Price */}
         <div className=" flex flex-col items-end justify-between  lg:hidden xl:flex flex-col">
-          <div className="rounded bg-[#4e2fd2] px-2 py-0 mb-2 text-base font-medium text-white">
+          {(selectedProtection?.length!==0)&&<div className="rounded bg-[#4e2fd2] px-2 py-0 mb-2 text-base font-medium text-white">
             {review.financingText}
-          </div>
+          </div>}
 
           <div className="flex items-end gap-3">
             <span className="text-xl text-gray-500 line-through">
@@ -100,9 +110,9 @@ export default function OrderCheckout() {
 
       {/* Financing + Price */}
       <div className="mt-10 flex items-end justify-between hidden lg:flex xl:hidden">
-        <div className="rounded bg-[#4e2fd2] px-3 py-1 text-lg font-medium text-white">
+        {(selectedProtection?.length!==0)&&<div className="rounded bg-[#4e2fd2] px-3 py-1 text-lg font-medium text-white">
           {review.financingText}
-        </div>
+        </div>}
 
         <div className="flex items-end gap-3">
           <span className="text-2xl text-gray-500 line-through">

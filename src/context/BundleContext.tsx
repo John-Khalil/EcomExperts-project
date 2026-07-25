@@ -38,6 +38,7 @@ const initialState: BundleState = {
     "microsd-256": 2,
 
     "cam-unlimited": 1,
+    "wyze-30-days-refund-protection": 1,
   },
 };
 
