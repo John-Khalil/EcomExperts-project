@@ -5,9 +5,16 @@ import useProducts from "../hooks/LoadProducts";
 
 import type {
   Product,
-  ProductId,
   IncludedBenefit,
 } from "../types/types";
+
+type DisplayEntry = {
+  product: Product;
+  quantityKey: string;
+  quantity: number;
+  variantLabel?: string;
+  thumbnail?: string;
+};
 
 export default function OrderReview() {
   const { state, updateQuantity } = useBundle();
@@ -24,98 +31,96 @@ export default function OrderReview() {
     return <div>{error}</div>;
   }
 
-  function getQuantity(product: Product) {
+  // Returns one entry per *selected* variant of a product.
+  // Products without variants return a single entry (if quantity > 0).
+  // Products with variants return one entry PER variant that has quantity > 0,
+  // so selecting two different variants of the same product shows two rows.
+  function getProductEntries(product: Product): DisplayEntry[] {
     const variants = product.variants ?? [];
 
     if (variants.length === 0) {
-      return state.quantities[product.id] ?? 0;
+      const quantity = state.quantities[product.id] ?? 0;
+
+      if (quantity <= 0) return [];
+
+      return [
+        {
+          product,
+          quantityKey: product.id,
+          quantity,
+        },
+      ];
     }
 
-    const variant =
-      state.activeVariants[product.id as ProductId];
+    return variants
+      .map((variant) => {
+        const quantityKey = `${product.id}:${variant.id}`;
+        const quantity = state.quantities[quantityKey] ?? 0;
 
-    if (!variant) return 0;
-
-    return (
-      state.quantities[
-        `${product.id}:${variant}`
-      ] ?? 0
-    );
+        return {
+          product,
+          quantityKey,
+          quantity,
+          variantLabel: variant.label,
+          thumbnail: variant.thumbnail,
+        };
+      })
+      .filter((entry) => entry.quantity > 0);
   }
 
-  function getQuantityKey(product: Product) {
-    const variants = product.variants ?? [];
-
-    if (variants.length === 0) {
-      return product.id;
-    }
-
-    const variant =
-      state.activeVariants[product.id as ProductId];
-
-    if (!variant) {
-      return product.id;
-    }
-
-    return `${product.id}:${variant}`;
-  }
-
-  function increase(product: Product) {
-    const key = getQuantityKey(product);
+  function increase(entry: DisplayEntry) {
+    const { product, quantityKey, quantity } = entry;
 
     updateQuantity(
-      key,
-      (product.category==="plan"||(product.price===0))? 1 :(getQuantity(product) + 1) + 1
+      quantityKey,
+      product.category === "plan" || product.price === 0
+        ? 1
+        : (quantity + 1) + 1
     );
   }
 
-  function decrease(product: Product) {
-    const quantity = getQuantity(product);
+  function decrease(entry: DisplayEntry) {
+    const { product, quantityKey, quantity } = entry;
 
     if (quantity <= 0) return;
 
-    const key = getQuantityKey(product);
-
     updateQuantity(
-      key,
-       Math.max(product.required ? 1 : 0, quantity - 1)
+      quantityKey,
+      Math.max(product.required ? 1 : 0, quantity - 1)
     );
   }
 
-  const selectedProducts = products.filter(
-    (product) => getQuantity(product) > 0
+  const allEntries = products.flatMap(getProductEntries);
+
+  const cameras = allEntries.filter(
+    (entry) => entry.product.category === "cameras"
   );
 
-  const cameras = selectedProducts.filter(
-    (p) => p.category === "cameras"
+  const sensors = allEntries.filter(
+    (entry) => entry.product.category === "sensors"
   );
 
-  const sensors = selectedProducts.filter(
-    (p) => p.category === "sensors"
+  const accessories = allEntries.filter(
+    (entry) => entry.product.category === "accessories"
   );
 
-  const accessories = selectedProducts.filter(
-    (p) => p.category === "accessories"
+  const plans = allEntries.filter(
+    (entry) => entry.product.category === "plan"
   );
 
-  const plans = selectedProducts.filter(
-    (p) => p.category === "plan"
-  );
-
-  const selectedPlan = plans[0];
+  const selectedPlan = plans[0]?.product;
 
   const benefits: IncludedBenefit[] =
-    selectedPlan &&
-    "includedBenefits" in selectedPlan
+    selectedPlan && "includedBenefits" in selectedPlan
       ? selectedPlan.includedBenefits ?? []
       : [];
 
   function renderSection(
     title: string,
-    items: Product[],
+    entries: DisplayEntry[],
     imageBackground?: string,
   ) {
-    if (items.length === 0) return null;
+    if (entries.length === 0) return null;
 
     return (
       <div className="mb-8">
@@ -124,23 +129,30 @@ export default function OrderReview() {
         </h3>
 
         <div className="space-y-5">
-          {items.map((product) => {
-            const quantity = getQuantity(product);
+          {entries.map((entry) => {
+            const { product, quantity, variantLabel, thumbnail } = entry;
 
             return (
               <div
-                key={product.id}
+                key={entry.quantityKey}
                 className="flex items-center gap-4"
               >
                 <img
-                  src={product?.icon??product.image}
-                  alt={product.name}
+                  src={thumbnail ?? product.icon ?? product.image}
+                  alt={variantLabel ? `${product.name} - ${variantLabel}` : product.name}
                   className={`h-20 max-w-60 rounded-lg  object-contain ${imageBackground??"bg-white"}`}
                 />
 
                 <div className="flex-1">
                   <p className="text-xl font-medium">
                     {product.name}
+                    {variantLabel && (
+                      <span className="text-gray-500">
+                        {" "}
+                        <br/>
+                        {variantLabel}
+                      </span>
+                    )}
 
                     {"required" in product &&
                       product.required &&
@@ -153,7 +165,7 @@ export default function OrderReview() {
                   
                   {!(product.category==="plan")&&<div className="flex  items-end justify-end gap-2 p-1">
                     <button
-                      onClick={() => decrease(product)}
+                      onClick={() => decrease(entry)}
                       className="flex h-7 w-7 items-center justify-center rounded  p-1 bg-white"
                     >
                       <Minus size={16} />
@@ -164,7 +176,7 @@ export default function OrderReview() {
                     </span>
 
                     <button
-                      onClick={() => increase(product)}
+                      onClick={() => increase(entry)}
                       className="flex h-7 w-7 items-center justify-center rounded  p-1 bg-white"
                     >
                       <Plus size={16} />
@@ -221,26 +233,22 @@ export default function OrderReview() {
         "CAMERAS",
         cameras
       )}
-      {/* {cameras?.length&&<div className="my-2 h-px w-full bg-gray-300" />} */}
 
       {renderSection(
         "SENSORS",
         sensors
       )}
-      {/* {sensors?.length&&<div className="my-2 h-px w-full bg-gray-300" />} */}
 
       {renderSection(
         "ACCESSORIES",
         accessories
       )}
-      {/* {(accessories?.length)&&<div className="my-2 h-px w-full bg-gray-300" />} */}
 
       {renderSection(
         "PLAN",
         plans,
         "bg-[#edf4ff]"
       )}
-      {/* {(plans?.length!==0)&&<div className="my-2 h-px w-full bg-gray-300" />} */}
 
       {benefits.length > 0 && (
         <div className="mb-8  pt-6">
@@ -279,37 +287,6 @@ export default function OrderReview() {
           ))}
         </div>
       )}
-
-      {/* <div className="pt-6">
-        {compareSubtotal > 0 && (
-          <div className="flex justify-between text-gray-500 line-through">
-            <span>
-              Regular Price
-            </span>
-
-            <span>
-              ${compareSubtotal.toFixed(2)}
-            </span>
-          </div>
-        )}
-
-        <div className="mt-2 flex justify-between text-xl font-bold">
-          <span>
-            Total
-          </span>
-
-          <span>
-            ${subtotal.toFixed(2)}
-          </span>
-        </div>
-
-        {savings > 0 && (
-          <p className="mt-4 text-green-600">
-            You're saving $
-            {savings.toFixed(2)}
-          </p>
-        )}
-      </div> */}
     </div>
   );
 }
