@@ -90,12 +90,12 @@ export default function OrderCheckout() {
         </>}
 
         {/* Financing + Price */}
-        <div className=" flex flex-col items-end justify-between  lg:hidden xl:flex flex-col">
+        <div className=" flex flex-col items-end justify-between  lg:hidden xl:flex flex-col ml-auto">
           {(selectedProtection?.length!==0)&&<div className="rounded bg-[#4e2fd2] px-2 py-0 mb-2 text-base font-medium text-white">
             {review.financingText}
           </div>}
 
-          <div className="flex items-end gap-3">
+          <div className="flex items-end gap-3 justify-end ml-auto"> 
             <span className="text-xl text-gray-500 line-through">
               ${totals.subtotal.toFixed(2)}
             </span>
@@ -114,7 +114,7 @@ export default function OrderCheckout() {
           {review.financingText}
         </div>}
 
-        <div className="flex items-end gap-3">
+        <div className="flex items-end gap-3 ml-auto">
           <span className="text-2xl text-gray-500 line-through">
             ${totals.subtotal.toFixed(2)}
           </span>
