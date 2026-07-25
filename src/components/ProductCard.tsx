@@ -1,4 +1,4 @@
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, Check } from "lucide-react";
 
 import type {
   Product,
@@ -18,7 +18,7 @@ type ProductCardProps = {
 
   onVariantChange?: (
     productId: ProductId,
-    variant: Variant
+    variantId: ProductVariant["id"] | Variant
   ) => void;
 
   onQuantityChange: (
@@ -54,14 +54,14 @@ export default function ProductCard({
     onQuantityChange(id as ProductId, Math.max(required ? 1 : 0, quantity - 1));
 
   const increase = () =>
-    onQuantityChange(id as ProductId, (product.category==="plan"||(price===0))? 1 :quantity + 1);
+    onQuantityChange(id as ProductId, ((product.category === "plan" || product.category === "protection")||(price===0))? 1 :quantity + 1);
 
   return (
     <div
-      className={`relative flex flex-col rounded-2xl bg-white py-2 px-3 transition-shadow max-xl:max-w-[320px] max-xl:mx-auto
+      className={`relative flex flex-col rounded-2xl bg-white py-2 px-3 transition-shadow   max-xl:max-w-[320px] max-xl:mx-auto
       ${
         selected
-          ? "ring-2 ring-[#5B4FE5] shadow-[0_2px_16px_rgba(91,79,229,0.12)]"
+          ? "ring-2 ring-[#5B4FE5] shadow-[0_2px_16px_rgba(91,79,229,0.12)] mt-0.5 mx-auto lg:ml-0.5 lg:mr-0.5 md:ml-0.5 md:mr-0.5 xl:mx-auto"
           : "ring-1 ring-slate-200"
       }`}
     >
@@ -71,17 +71,17 @@ export default function ProductCard({
         </span>
       )}
 
-      <div className="flex items-center justify-center max-xl:flex-col gap-0">
+      <div className="flex items-center xl:min-h-[217px] lg:min-h-[350px] md:min-h-[350px] justify-center max-xl:flex-col gap-0">
         
         <div className="flex h-38 w-38 mx-auto flex-none items-center justify-center overflow-hidden rounded-xl bg-white">
           <img
             src={image}
             alt={name}
-            className="h-full w-full object-contain p-0"
+            className="h-full w-full object-contain p-2"
           />
         </div>
 
-        <div className="flex min-w-[240px] flex-col">
+        <div className="flex flex-grow flex-col">
           <h3 className="text-2xl font-semibold text-slate-900">
             {icon ? (
               <img src={icon} alt={name} className="h-10  inline-block mr-2" />
@@ -113,7 +113,7 @@ export default function ProductCard({
                     key={v.id}
                     type="button"
                     onClick={() =>
-                      onVariantChange?.(id as ProductId, v.id as Variant)
+                      onVariantChange?.(id as ProductId, v.id)
                     }
                     aria-pressed={isActive}
                     className={`flex items-center gap-1 rounded-md border-2 px-2.5 py-1.5 text-sm font-normal transition-colors
@@ -173,12 +173,12 @@ export default function ProductCard({
             <div className="text-right leading-tight max-xl:flex max-xl:items-end max-xl:gap-2">
               {compareAtPrice != null && (
                 <div className="text-lg font-normal text-red-500 line-through">
-                  ${compareAtPrice.toFixed(2)}{product.category === "plan" && " /mo"}
+                  ${compareAtPrice.toFixed(2)}{(product.category === "plan" || product.category === "protection") && " /mo"}
                 </div>
               )}
 
               <div className="text-lg font-normal text-slate-900">
-                ${price.toFixed(2)}{product.category === "plan" && " /mo"}
+                ${price.toFixed(2)}{(product.category === "plan" || product.category === "protection") && " /mo"}
               </div>
             </div>
           </div>
