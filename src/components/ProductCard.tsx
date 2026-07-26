@@ -61,12 +61,12 @@ export default function ProductCard({
       className={`relative flex flex-col rounded-2xl bg-white py-2 px-3 transition-shadow   max-xl:max-w-[320px] max-xl:mx-auto
       ${
         selected
-          ? "ring-2 ring-[#5B4FE5] shadow-[0_2px_16px_rgba(91,79,229,0.12)] mt-0.5 mx-auto lg:ml-0.5 lg:mr-0.5 md:ml-0.5 md:mr-0.5 xl:mx-auto"
+          ? "ring-2 ring-[#4e2fd2] shadow-[0_2px_16px_rgba(91,79,229,0.12)] mt-0.5 mx-auto lg:ml-0.5 lg:mr-0.5 md:ml-0.5 md:mr-0.5 xl:mx-auto"
           : "ring-1 ring-slate-200"
       }`}
     >
       {badge && (
-        <span className="absolute top-3 left-4 rounded-full bg-[#5B4FE5] px-3 py-1 text-xs font-semibold text-white shadow-sm">
+        <span className="absolute top-3 left-4 rounded-full bg-[#4e2fd2] px-3 py-1 text-xs font-semibold text-white shadow-sm">
           {badge.text}
         </span>
       )}
@@ -95,7 +95,7 @@ export default function ProductCard({
               {learnMore && (
                 <a
                   href={learnMore}
-                  className="font-medium text-[#5B4FE5] underline underline-offset-2"
+                  className="font-medium text-[#0000ee] underline underline-offset-2"
                 >
                   Learn More
                 </a>

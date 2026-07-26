@@ -11,13 +11,17 @@ export default function OrderCheckout() {
 
   const getQuantityForProduct = (product: Product) => {
     const variants = product.variants ?? [];
-    const activeVariant = state.activeVariants[product.id as ProductId];
-    const key =
-      variants.length > 0 && activeVariant
-        ? `${product.id}:${activeVariant}`
-        : product.id;
 
-    return state.quantities[key] ?? 0;
+    // No variants
+    if (variants.length === 0) {
+      return state.quantities[product.id] ?? 0;
+    }
+
+    // Sum every variant
+    return variants.reduce((total, variant) => {
+      const key = `${product.id}:${variant.id}`;
+      return total + (state.quantities[key] ?? 0);
+    }, 0);
   };
 
   const totals = useMemo(() => {

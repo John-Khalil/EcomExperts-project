@@ -123,7 +123,7 @@ export default function OrderReview() {
     if (entries.length === 0) return null;
 
     return (
-      <div className="mb-8">
+      <div className="mb-0.5">
         <h3 className="mb-4 text-sm uppercase text-gray-500">
           {title}
         </h3>
@@ -140,11 +140,11 @@ export default function OrderReview() {
                 <img
                   src={thumbnail ?? product.icon ?? product.image}
                   alt={variantLabel ? `${product.name} - ${variantLabel}` : product.name}
-                  className={`h-20 max-w-60 rounded-lg  object-contain ${imageBackground??"bg-white"}`}
+                  className={`h-15 sm:h-20 max-w-60 rounded-lg  object-contain ${imageBackground??"bg-white"}`}
                 />
 
                 <div className="flex-1">
-                  <p className="text-xl font-medium">
+                  <p className="text-sm sm:text-xl font-medium">
                     {product.name}
                     {variantLabel && (
                       <span className="text-gray-500">
@@ -196,7 +196,7 @@ export default function OrderReview() {
                       </div>
                     )}
 
-                    <div className="font-semibold text-purple-700">
+                    <div className="font-semibold text-[#4e2fd2]">
                       {product.price === 0
                         ? "FREE"
                         : `$${(
@@ -277,7 +277,7 @@ export default function OrderReview() {
                   </div>
                 )}
 
-                {(benefit.price!==undefined) &&<div className="font-semibold text-purple-700">
+                {(benefit.price!==undefined) &&<div className="font-semibold text-[#4e2fd2]">
                   {benefit.price === 0
                     ? "FREE"
                     : `$${benefit.price?.toFixed(2)}`}

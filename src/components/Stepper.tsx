@@ -70,7 +70,7 @@ export default function Stepper({
   onStepChange,
 }: StepperProps) {
   return (
-    <div className="w-full">
+    <div className="w-full space-y-2">
       {steps.map((function Step(step, index) {
         const isActive = activeStep === step.id;
         const nextStep =index < steps.length - 1 ? steps[index + 1] : null;
@@ -96,6 +96,7 @@ export default function Stepper({
         return (
           <div key={step.id}  className={`
             transition
+            rounded-xl
             ${isActive ? "bg-[#edf3ff]" : "bg-white"}
           `}>
 
@@ -124,7 +125,7 @@ export default function Stepper({
               `}
             >
               {/* Left Side */}
-              <div className="grid flex-1 w-full grid-cols-[40px_1fr] grid-rows-[auto_auto_auto] gap-x-5 gap-y-2 text-left">
+              <div className="grid flex-1 w-full grid-cols-[40px_1fr] grid-rows-[auto_auto_auto] gap-x-5 gap-y-2 text-left ">
 
                 <img
                   src={step.icon}
@@ -146,7 +147,7 @@ export default function Stepper({
               </div>
 
               {/* Chevron */}
-              <span className="text-purple-600 inline-flex ">
+              <span className="text-[#4e2fd2] inline-flex ">
                 {isActive&&<span className="text-base font-medium pb-2 mx-1">{`${selectedCount} selected`}</span>}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
