@@ -130,16 +130,18 @@ export default function Stepper({
                 <img
                   src={step.icon}
                   alt={step.title}
-                  className="h-10 w-10 self-center"
+                  className="row-span-3 h-10 w-10 self-center"
                 />
 
                 {/* Title */}
                 <h2
                   className="
                     self-center
-                    text-2xl
+                    text-lg
+                    sm:text-2xl
                     font-semibold
                     text-gray-900
+                    row-span-3
                   "
                 >
                   {step.title}
@@ -163,7 +165,7 @@ export default function Stepper({
 
             {/* Step Content */}
            {isActive ? (
-            <div className="bg-[#edf3ff] p-6">
+            <div className="bg-[#edf3ff] px-6">
               <ProductSection stepId={step.id} />
 
               {nextStep && (
