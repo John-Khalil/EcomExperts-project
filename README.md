@@ -63,7 +63,9 @@ If the mock API is not running, the frontend falls back to the local file at `sr
 
 ## Very Quick Demo
 
-<iframe width="4800" height="2700" src="https://www.youtube.com/embed/Y23nRfQ2DRs" title="bundle builder ecomexperts challenge" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Very Quick Demo](https://img.youtube.com/vi/Y23nRfQ2DRs/maxresdefault.jpg)](https://www.youtube.com/watch?v=Y23nRfQ2DRs)
+
+GitHub does not render embedded `iframe` videos inside `README.md`, so this preview image links directly to the demo on YouTube.
 
 ## What The Project Does
 
