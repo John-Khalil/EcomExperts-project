@@ -65,7 +65,7 @@ If the mock API is not running, the frontend falls back to the local file at `sr
 
 [![Very Quick Demo](https://img.youtube.com/vi/Y23nRfQ2DRs/maxresdefault.jpg)](https://www.youtube.com/watch?v=Y23nRfQ2DRs)
 
-GitHub does not render embedded `iframe` videos inside `README.md`, so this preview image links directly to the demo on YouTube.
+links directly to the demo on YouTube.
 
 ## What The Project Does
 
