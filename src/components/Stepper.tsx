@@ -165,7 +165,7 @@ export default function Stepper({
 
             {/* Step Content */}
            {isActive ? (
-            <div className="bg-[#edf3ff] px-6">
+            <div className="bg-[#edf3ff] px-6 pb-6">
               <ProductSection stepId={step.id} />
 
               {nextStep && (
