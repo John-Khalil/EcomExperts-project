@@ -43,7 +43,7 @@ export type Badge = {
 
 
 export type ProductVariant = {
-  id: string;
+  id: Variant;
   label: string;
   thumbnail: string;
 };

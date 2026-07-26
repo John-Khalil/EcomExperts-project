@@ -1,4 +1,4 @@
-import { Minus, Plus, Check } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 
 import type {
   Product,
@@ -18,7 +18,7 @@ type ProductCardProps = {
 
   onVariantChange?: (
     productId: ProductId,
-    variantId: ProductVariant["id"] | Variant
+    variantId: Variant
   ) => void;
 
   onQuantityChange: (
