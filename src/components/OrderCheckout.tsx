@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useBundle } from "../context/BundleContext";
 import useProducts from "../hooks/LoadProducts";
-import type { Product, ProductId } from "../types/types";
+import type { Product } from "../types/types";
 
 export default function OrderCheckout() {
   const { state ,save} = useBundle();
